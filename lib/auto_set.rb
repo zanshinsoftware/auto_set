@@ -30,7 +30,7 @@ module AutoSet
       if self.send("#{column_code}_changed?")
         if self.send(column_code).present?
           parent = self
-          options[:parent].each do |parent_name|
+          parents.each do |parent_name|
             parent = parent.send(parent_name)
           end
           self.send "#{column}=", parent.send(column.to_s.pluralize).where(code: self.send(column_code)).first
