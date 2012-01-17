@@ -5,7 +5,7 @@ module AutoSet
   def auto_set(column, parents)
     parents = [parents] unless parents.is_a? Array
 
-    before_create "auto_set_#{column}_from_#{parents.join('_')}"
+    before_save "auto_set_#{column}_from_#{parents.join('_')}"
 
     define_method "auto_set_#{column}_from_#{parents.join('_')}" do
       return if account_id.present?
@@ -15,6 +15,7 @@ module AutoSet
         return true unless parent.respond_to? parent_name
         parent = parent.send(parent_name)
       end
+
       self.send "#{column}=", parent.send("#{column}")
     end
   end
