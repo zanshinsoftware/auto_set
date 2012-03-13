@@ -2,10 +2,11 @@ require "auto_set/version"
 require 'active_record'
 
 module AutoSet
-  def auto_set(column, parents)
+  def auto_set(column, parents, options = {})
+    options.reverse_merge! callback: 'before_save'
     parents = [parents] unless parents.is_a? Array
 
-    before_save "auto_set_#{column}_from_#{parents.join('_')}"
+    set_callback options[:callback].to_s.split('_')[1], options[:callback].to_s.split('_')[0], "auto_set_#{column}_from_#{parents.join('_')}"
 
     define_method "auto_set_#{column}_from_#{parents.join('_')}" do
       return if account_id.present?
@@ -20,12 +21,13 @@ module AutoSet
     end
   end
 
-  def auto_set_from_code(column, parents)
+  def auto_set_from_code(column, parents, options = {})
+    options.reverse_merge! callback: 'before_save'
     parents = [parents] unless parents.is_a? Array
 
     column_code = "#{column}_code"
 
-    before_save "auto_set_from_#{column}"
+    set_callback options[:callback].to_s.split('_')[1], options[:callback].to_s.split('_')[0], "auto_set_from_#{column}"
 
     define_method "auto_set_from_#{column}" do
       if self.send("#{column_code}_changed?")
