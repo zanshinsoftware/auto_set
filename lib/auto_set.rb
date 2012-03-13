@@ -6,7 +6,7 @@ module AutoSet
     options.reverse_merge! callback: 'before_save'
     parents = [parents] unless parents.is_a? Array
 
-    set_callback options[:callback].to_s.split('_')[1], options[:callback].to_s.split('_')[0], "auto_set_#{column}_from_#{parents.join('_')}"
+    self.send options[:callback], "auto_set_#{column}_from_#{parents.join('_')}"
 
     define_method "auto_set_#{column}_from_#{parents.join('_')}" do
       return if account_id.present?
@@ -27,7 +27,7 @@ module AutoSet
 
     column_code = "#{column}_code"
 
-    set_callback options[:callback].to_s.split('_')[1], options[:callback].to_s.split('_')[0], "auto_set_from_#{column}"
+    self.send options[:callback], "auto_set_from_#{column}"
 
     define_method "auto_set_from_#{column}" do
       if self.send("#{column_code}_changed?")
