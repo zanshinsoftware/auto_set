@@ -3,7 +3,7 @@ require 'active_record'
 
 module AutoSet
   def auto_set(column, parents, options = {})
-    options.reverse_merge! callback: 'before_save'
+    options.reverse_merge! callback: 'before_save', from_column: column
     parents = [parents] unless parents.is_a? Array
 
     self.send options[:callback], "auto_set_#{column}_from_#{parents.join('_')}"
@@ -17,7 +17,7 @@ module AutoSet
         parent = parent.send(parent_name)
       end
 
-      self.send "#{column}=", parent.send("#{column}")
+      self.send "#{column}=", parent.send("#{options[:from_column]}")
     end
   end
 
