@@ -9,7 +9,7 @@ module AutoSet
     self.send options[:callback], "auto_set_#{column}_from_#{parents.join('_')}"
 
     define_method "auto_set_#{column}_from_#{parents.join('_')}" do
-      return if account_id.present?
+      return if send(column).present?
 
       parent = self
       parents.each do |parent_name|
