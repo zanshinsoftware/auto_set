@@ -23,7 +23,7 @@ module AutoSet
 
   def auto_set_from_code(column, parents, options = {})
     options.reverse_merge! callback: 'before_save'
-    parents = [parents] unless parents.is_a? Array
+    parents = [ parents ] unless parents.is_a? Array
 
     column_code = "#{column}_code"
 
@@ -41,7 +41,11 @@ module AutoSet
           self.send "#{column}=", nil
         end
       elsif self.send("#{column}_id_changed?")
-        self.send "#{column_code}=", self.send("#{column}").code
+        if self.send(column).present?
+          self.send "#{column_code}=", self.send(column).code
+        else
+          self.send "#{column_code}=", nil
+        end
       end
     end
   end
