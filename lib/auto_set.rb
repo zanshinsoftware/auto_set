@@ -21,9 +21,8 @@ module AutoSet
     end
   end
 
-  def auto_set_from_code(column, parents, options = {})
+  def auto_set_from_code(column, options = {})
     options.reverse_merge! callback: 'before_save'
-    parents = [ parents ] unless parents.is_a? Array
 
     column_code = "#{column}_code"
 
@@ -32,11 +31,9 @@ module AutoSet
     define_method "auto_set_from_#{column}" do
       if self.send("#{column_code}_changed?")
         if self.send(column_code).present?
-          parent = self
-          parents.each do |parent_name|
-            parent = parent.send(parent_name)
-          end
-          self.send "#{column}=", parent.send(column.to_s.pluralize).where(code: self.send(column_code)).first
+          reflection = self.class.reflections[column]
+
+          self.send "#{column}=", reflection.klass.where(code: self.send(column_code)).first
         else
           self.send "#{column}=", nil
         end
