@@ -6,7 +6,6 @@ require 'models/task'
 describe AutoSet do
   before :all do
     @project = Project.create title: 'My Awesome Project', code: 'proj1'
-
     @group_1 = Group.create title: 'My Group', project_code: 'proj1'
     @task = @group_1.tasks.create content: 'Write awesome documentation'
 

@@ -47,7 +47,6 @@ module AutoSet
 
     def parent_object
       parent = @record
-
       @parents.each do |parent_name|
         parent = parent.send(parent_name) if parent.respond_to? parent_name
       end
@@ -70,6 +69,5 @@ module AutoSet
       value = @record.send(@column).code if @record.send(@column).present?
       @record.send "#{column_from}=", value
     end
-
   end
 end
