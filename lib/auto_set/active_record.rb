@@ -12,10 +12,12 @@ module AutoSet
     end
 
     module ClassMethods
-      def auto_set(column, options = {})
-        callback = [:save, :create, :validation].include?(options[:before]) ? :"before_#{options.delete :before}" : :before_save
+      def auto_set(column, parents, options = {})
+        before = (parents.is_a?(Hash) ? parents : options).delete(:before)
 
-        self.send callback, SetColumn.new(column, options)
+        callback = [:save, :create, :validation].include?(before) ? :"before_#{before}" : :before_save
+
+        self.send callback, SetColumn.new(column, parents, options)
       end
     end
   end

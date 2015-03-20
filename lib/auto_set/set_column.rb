@@ -1,18 +1,23 @@
 module AutoSet
   class SetColumn
-    def initialize(column, options)
+    def initialize(column, parents, options = {})
       @column = column
-      @parents = options[:through]
-      @parents = @parents.is_a?(Array) ? @parents : [ @parents ]
-      @options = options.reverse_merge from_column: column
+
+      if parents.is_a? Hash
+        @options = parents.reverse_merge from: :code
+      else
+        @options = options || {}
+        @parents = parents
+        @parents = @parents.is_a?(Array) ? @parents : [ @parents ]
+      end
     end
 
     def before_save(record)
       @record = record
-      if @options[:from]
-        from_code
-      else
+      if @parents.present?
         direct
+      else
+        from_code
       end
     end
 
@@ -33,16 +38,20 @@ module AutoSet
       end
     end
 
-    def direct
-      return if @record.send(@column).present?
-
+    def parent_object
       parent = @record
+
       @parents.each do |parent_name|
-        return true unless parent.respond_to? parent_name
-        parent = parent.send(parent_name)
+        parent = parent.send(parent_name) if parent.respond_to? parent_name
       end
 
-      @record.send "#{@column}=", parent.send(@options[:from_column])
+      parent
+    end
+
+    def direct
+      if @record.send(@column).blank?
+        @record.send "#{@column}=", parent_object.send(@column)
+      end
     end
 
     def from_code
