@@ -55,19 +55,19 @@ module AutoSet
     end
 
     def parent_from_column(column, from)
-      if @record.send(code).present?
+      if @record.send("#{column}_#{from}").present?
         reflection = @record.class.reflections[column.to_s]
-        reflection.klass.where(code: @record.send(code)).first if reflection.present?
+        reflection.klass.where(from => @record.send("#{column}_#{from}")).first if reflection.present?
       end
     end
 
     def from_column_changed
-      @record.send "#{@column}=", parent_from_column(@column, "#{@column}_#{@options[:from]}")
+      @record.send "#{@column}=", parent_from_column(@column, @options[:from])
     end
 
     def from_column_id_changed
       value = @record.send(@column).code if @record.send(@column).present?
-      @record.send "#{column_from}=", value
+      @record.send "#{@column}_#{@options[:from]}=", value
     end
   end
 end
