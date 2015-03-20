@@ -2,23 +2,35 @@
 $:.push File.expand_path("../lib", __FILE__)
 require "auto_set/version"
 
-Gem::Specification.new do |s|
-  s.name        = "auto_set"
-  s.version     = AutoSet::VERSION
-  s.authors     = ["29sul Tecnologia da Informação"]
-  s.email       = ["contato@29sul.com.br"]
-  s.homepage    = ""
-  s.summary     = %q{Updates a column from another model}
-  s.description = %q{Updates a column from another model}
+Gem::Specification.new do |spec|
+  spec.name        = "auto_set"
+  spec.version     = AutoSet::VERSION
+  spec.platform    = Gem::Platform::RUBY
+  spec.authors     = ["Felipe Diesel"]
+  spec.email       = ["felipediesel@gmail.com"]
+  spec.homepage    = "http://github.com/felipediesel/auto_set"
+  spec.summary     = %q{Updates a column from another model}
+  spec.description = %q{Updates a column from another model}
 
-  s.rubyforge_project = "auto_set"
+  spec.rubyforge_project = "auto_set"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  spec.files         = `git ls-files`.split("\n")
+  spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  spec.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
-  # s.add_runtime_dependency "rest-client"
+  spec.add_dependency "activerecord", ">= 4.0.13"
+  spec.add_dependency "activesupport", ">= 4.0.13"
+
+  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "rake"
+
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec-nc"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "fuubar", '2.0.0.rc1'
+  spec.add_development_dependency "coveralls"
+
+  spec.add_development_dependency 'sqlite3'
 end
