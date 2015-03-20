@@ -13,7 +13,7 @@ describe AutoSet do
     @group_2 = @project.groups.create title: 'Second Group'
   end
 
-  describe 'through' do
+  describe 'parent' do
     it { expect(@group_1.project_id).to eq 1 }
   end
 
