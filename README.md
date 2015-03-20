@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/felipediesel/auto_set/badge.svg?branch=master)](https://coveralls.io/r/felipediesel/auto_set?branch=master)
 [![Code Climate](https://codeclimate.com/github/felipediesel/auto_set/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_set)
 
-auto_set automaticly update a column from a relationship in Rails.
+auto_set automatically update a column from a relationship in Rails.
 
 ## Installation
 

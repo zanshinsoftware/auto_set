@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Felipe Diesel"]
   spec.email       = ["felipediesel@gmail.com"]
   spec.homepage    = "http://github.com/felipediesel/auto_set"
-  spec.summary     = %q{Updates a column from another model}
-  spec.description = %q{Updates a column from another model}
+  spec.summary     = %q{automatically update a column from a relationship}
+  spec.description = %q{Automatically update a column from a relationship}
 
   spec.rubyforge_project = "auto_set"
 
