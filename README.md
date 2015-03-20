@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/felipediesel/auto_set/badge.svg?branch=master)](https://coveralls.io/r/felipediesel/auto_set?branch=master)
 [![Code Climate](https://codeclimate.com/github/felipediesel/auto_set/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_set)
 
-auto_set provides automatic incrementation for a integer or string fields in Rails.
+auto_set automaticly update a column from a relationship in Rails.
 
 ## Installation
 
@@ -14,37 +14,24 @@ To use the gem version, put the following gem requirement in your `Gemfile`:
 
     gem "auto_set"
 
-
 ## Usage
 
-To work with a auto increment column you used to do sometihng like this in your model:
+Supposing you have 3 models: Project, Group and Task and when you create a task in a groupit need to be related also to project. So, to auto\_set update task.project_id with group.project.id, you do this:
 
-    before_create :set_code
-    def set_code
-      max_code = Operation.maximum(:code)
-      self.code = max_code.to_i + 1
-    end
+    auto_set :project, :group
 
-Looks fine, but not when you need to do it over and over again. In fact auto_set does it under the cover.
 
-All you need to do is this:
+The is also another case where you have a code that can be entered by the user and you want to relate it to an id. Let's assume that Group has a column project\_code and you want to set project_id with that project id:
 
-    auto_set
-
-And your code field will be incremented
-
+    auto_set :project, from: :code
 
 ## Customizing
 
-So you have a different column or need a scope. auto_set provides options. You can use it like this:
+You can set different type of callback:
 
-    auto_set column: :letter, scope: [:account_id, :job_id], initial: 'C', force: true
+    auto_set :column, :parent, before: :create
 
-* column: the column that will be incremented. Can be integer os string (default: code)
-* scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
-* initial: initial value of column (default: 1)
-* force: you can set a value before create and auto_set will not change that, but if you do want this, set force to true (default: false)
-
+before can be used in both cases of use and it can be save (default), create or validation.
 
 ## Compatibility
 
