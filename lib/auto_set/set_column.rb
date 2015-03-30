@@ -56,7 +56,7 @@ module AutoSet
 
     def parent_from_column(column, from)
       if @record.send("#{column}_#{from}").present?
-        reflection = @record.class.reflections[column.to_s]
+        reflection = @record.class.reflections.with_indifferent_access[column]
         reflection.klass.where(from => @record.send("#{column}_#{from}")).first if reflection.present?
       end
     end
